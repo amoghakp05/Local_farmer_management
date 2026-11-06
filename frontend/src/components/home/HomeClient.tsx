@@ -29,7 +29,9 @@ export function HomeClient() {
       <HarvestJourneySection />
 
       {/* 3. Fresh Today Live Ticker Strip */}
-      <FreshTodayStrip />
+      <div id="live-produce">
+        <FreshTodayStrip />
+      </div>
 
       {/* 4. Debounced Search Bar (Crop + Location) */}
       <div ref={searchSectionRef}>

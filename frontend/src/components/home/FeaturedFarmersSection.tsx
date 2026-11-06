@@ -60,7 +60,7 @@ export function FeaturedFarmersSection() {
             All dummy and mock farmers have been completely removed. KhetBazaar is clean and awaiting authentic growers to register.
           </p>
           <div className="mt-6 flex justify-center">
-            <Link href="/farmers">
+            <Link href="/register?role=farmer">
               <Button variant="accent" size="md" leftIcon={<PlusCircle className="w-4 h-4" />}>
                 Register Inaugural Farmer (ರೈತರ ನೋಂದಣಿ)
               </Button>

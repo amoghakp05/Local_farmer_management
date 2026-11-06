@@ -42,31 +42,57 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
 
       {/* Primary Action Buttons */}
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <Button
-          size="lg"
-          variant="primary"
-          leftIcon={<Search className="w-5 h-5" />}
-          onClick={onExploreClick}
-        >
-          Explore Available Crops
-        </Button>
+        <Link href="/crops">
+          <Button
+            size="lg"
+            variant="primary"
+            leftIcon={<Search className="w-5 h-5" />}
+            className="cursor-pointer"
+          >
+            Explore Available Crops
+          </Button>
+        </Link>
+
+        <Link href="/register?role=farmer">
+          <Button
+            size="lg"
+            variant="accent"
+            leftIcon={<PlusCircle className="w-5 h-5" />}
+            className="cursor-pointer"
+          >
+            + Register as Farmer
+          </Button>
+        </Link>
 
         <Link href="/design-system">
           <Button
             size="lg"
             variant="secondary"
             leftIcon={<SproutIcon size={18} className="text-[var(--forest-700)]" />}
+            className="cursor-pointer"
           >
             Design System Specs
           </Button>
         </Link>
       </div>
 
-      {/* 3D Journey Scroll Hint */}
-      <div className="mt-12 flex flex-col items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--earth-muted)]">
-        <span>Scroll to follow the 3D Harvest Journey</span>
+      {/* 3D Journey Scroll Hint (Clickable Smooth Scroll) */}
+      <button
+        type="button"
+        onClick={() => {
+          const el = document.getElementById("harvest-journey");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          } else if (onExploreClick) {
+            onExploreClick();
+          }
+        }}
+        className="mt-12 flex flex-col items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--forest-800)] hover:text-[var(--forest-900)] cursor-pointer group transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--forest-700)] rounded-lg p-2"
+        aria-label="Scroll down to the 3D Harvest Journey"
+      >
+        <span className="group-hover:underline">Explore the 3D Harvest Journey Below</span>
         <ArrowDown className="w-4 h-4 text-[var(--harvest-600)] animate-bounce" />
-      </div>
+      </button>
     </section>
   );
 }

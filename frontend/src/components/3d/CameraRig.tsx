@@ -10,9 +10,13 @@ interface CameraRigProps {
 }
 
 export function CameraRig({ scrollProgress, mousePos }: CameraRigProps) {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
   const currentProgressRef = useRef(0);
   const lookAtTargetRef = useRef(new THREE.Vector3(0, 0.8, 0));
+
+  // Determine if desktop wide screen (story card is on left side, so 3D model is framed on right)
+  const isDesktop = size.width >= 1024;
+  const framingOffset = isDesktop ? -0.8 : 0;
 
   // 1. Camera Trajectory Spline (5 Chapters)
   const cameraSpline = useMemo(() => {
@@ -64,10 +68,10 @@ export function CameraRig({ scrollProgress, mousePos }: CameraRigProps) {
     const parallaxX = mousePos.x * 0.45;
     const parallaxY = mousePos.y * 0.25;
 
-    // Apply combined position with gentle damp
+    // Apply combined position with gentle damp and desktop framing offset
     camera.position.x = THREE.MathUtils.damp(
       camera.position.x,
-      baseCamPos.x + parallaxX,
+      baseCamPos.x + framingOffset + parallaxX,
       5,
       safeDelta
     );

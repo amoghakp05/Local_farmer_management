@@ -39,6 +39,7 @@ export function Header() {
     { href: "/farmers", label: t("nav.farmers") },
     { href: "/consumer", label: "Consumer Hub" },
     { href: "/dashboard/farmer", label: "Farmer Portal" },
+    { href: "/admin", label: "Admin" },
   ];
 
   return (
@@ -110,6 +111,18 @@ export function Header() {
               className="text-xs font-semibold cursor-pointer"
             >
               Consumer
+            </Button>
+          </Link>
+
+          {/* APMC Admin Quick Link */}
+          <Link href="/admin">
+            <Button
+              size="sm"
+              variant="ghost"
+              leftIcon={<Shield className="w-3.5 h-3.5 text-purple-700" />}
+              className="text-xs font-bold text-purple-950 hover:bg-purple-50 cursor-pointer"
+            >
+              Admin
             </Button>
           </Link>
 
@@ -262,6 +275,17 @@ export function Header() {
               </Link>
             </div>
           )}
+
+          <div className="pt-2">
+            <Link
+              href="/admin"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-purple-50 text-purple-950 font-bold text-xs border border-purple-200"
+            >
+              <Shield className="w-3.5 h-3.5 text-purple-700" />
+              APMC Administrator Portal
+            </Link>
+          </div>
 
           <nav className="flex flex-col gap-1" aria-label="Mobile Navigation">
             {navLinks.map((link) => {

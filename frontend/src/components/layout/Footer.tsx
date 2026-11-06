@@ -102,6 +102,15 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/admin"
+                  className="text-purple-900 font-bold hover:text-purple-950 hover:underline underline-offset-4 transition-colors flex items-center gap-1"
+                >
+                  <ShieldVerifiedIcon size={14} className="text-purple-700" />
+                  APMC Admin Console
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacy"
                   className="hover:text-[var(--forest-700)] hover:underline underline-offset-4 transition-colors"
                 >

@@ -90,11 +90,11 @@ function RegisterFormContent() {
       return;
     }
 
-    // Redirect to respective destination
+    // Redirect to respective destination cleanly
     if (role === "farmer") {
-      router.push("/dashboard/farmer");
+      window.location.href = "/dashboard/farmer";
     } else {
-      router.push("/consumer");
+      window.location.href = "/consumer";
     }
   };
 

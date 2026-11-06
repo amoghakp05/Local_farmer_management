@@ -93,8 +93,8 @@ export default function FarmerDashboardPage() {
     }
   };
 
-  // Auth Guard: if not farmer
-  if (role !== "farmer") {
+  // Auth Guard: if not farmer or admin
+  if (role !== "farmer" && role !== "admin") {
     return (
       <div className="min-h-[75vh] flex items-center justify-center p-4">
         <div className="max-w-md w-full p-8 rounded-3xl bg-white border border-[var(--earth-border)] shadow-xl space-y-5">

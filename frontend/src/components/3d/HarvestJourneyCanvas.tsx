@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import { CameraRig } from "./CameraRig";
 import { HarvestScene } from "./HarvestScene";
 import { HarvestJourneyFallback } from "./HarvestJourneyFallback";
@@ -30,6 +31,14 @@ function isWebGLAvailable(): boolean {
   }
 }
 
+function CanvasInlineLoader() {
+  return (
+    <div className="w-full h-full min-h-[400px] flex flex-col items-center justify-center bg-transparent pointer-events-none">
+      <div className="w-8 h-8 rounded-full border-3 border-[var(--forest-600)] border-t-transparent animate-spin" />
+    </div>
+  );
+}
+
 export default function HarvestJourneyCanvas({
   scrollProgress,
   className = "",
@@ -44,10 +53,8 @@ export default function HarvestJourneyCanvas({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // WebGL capability check
     setHasWebGL(isWebGLAvailable());
 
-    // Reduced motion query
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setIsReducedMotion(motionQuery.matches);
 
@@ -56,7 +63,6 @@ export default function HarvestJourneyCanvas({
     };
     motionQuery.addEventListener("change", handleMotionChange);
 
-    // Save-Data bandwidth check
     const nav = navigator as any;
     if (nav.connection?.saveData) {
       setIsLowBandwidth(true);
@@ -67,7 +73,7 @@ export default function HarvestJourneyCanvas({
     };
   }, []);
 
-  // 2. Mouse Parallax Tracker (Passive window listener to prevent scroll/touch interception)
+  // 2. Mouse Parallax Tracker
   useEffect(() => {
     if (typeof window === "undefined" || isReducedMotion) return;
 
@@ -93,12 +99,11 @@ export default function HarvestJourneyCanvas({
     <CanvasErrorBoundary fallback={<HarvestJourneyFallback />}>
       <div
         ref={containerRef}
-        className={`relative w-full h-full min-h-[500px] overflow-hidden pointer-events-none ${className}`}
+        className={`relative w-full h-full min-h-[500px] overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
       >
-        <Suspense fallback={<HarvestJourneyFallback />}>
+        <Suspense fallback={<CanvasInlineLoader />}>
           <Canvas
             shadows
-            style={{ pointerEvents: "none" }}
             dpr={[1, 1.5]}
             frameloop="always"
             camera={{
@@ -113,6 +118,13 @@ export default function HarvestJourneyCanvas({
               alpha: false,
             }}
           >
+            <OrbitControls
+              enableZoom={false}
+              enablePan={false}
+              maxPolarAngle={Math.PI / 2 - 0.05}
+              minPolarAngle={0.2}
+              rotateSpeed={0.5}
+            />
             <CameraRig scrollProgress={scrollProgress} mousePos={mousePos} />
             <HarvestScene />
           </Canvas>
