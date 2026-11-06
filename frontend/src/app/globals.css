@@ -1,0 +1,149 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+:root {
+  /* Canvas & Warm Surfaces */
+  --canvas: #FAF8F3;
+  --surface: #FFFFFF;
+  --surface-warm: #F6F3EB;
+  --surface-muted: #EFEBE0;
+  --surface-sand: #E5DFD1;
+
+  /* Primary: Deep Forest Green (Brand 1) */
+  --forest-900: #0F251C;
+  --forest-800: #143326;
+  --forest-700: #1B4332; /* Primary Base */
+  --forest-600: #245741;
+  --forest-500: #2D6A4F;
+  --forest-200: #C2D9CD;
+  --forest-100: #E6EFEA;
+  --forest-50: #F2F7F4;
+
+  /* Accent: Harvest Orange (Brand 2) */
+  --harvest-900: #823408;
+  --harvest-800: #9E3F0B;
+  --harvest-700: #B24E12;
+  --harvest-600: #C85A17; /* Accent Base */
+  --harvest-500: #DD6E26;
+  --harvest-200: #F7D0B7;
+  --harvest-100: #FCECE0;
+  --harvest-50: #FEF7F2;
+
+  /* Earthy Neutrals & Typography (Brand 3) */
+  --earth-ink: #1C231E;       /* Highest contrast text */
+  --earth-charcoal: #2E3630;  /* Secondary text */
+  --earth-muted: #5A625C;     /* Readable muted label (contrast > 5.2:1) */
+  --earth-border: #DCD5C5;    /* Tactile warm border */
+  --earth-border-subtle: #EBE5D8;
+  --earth-line: #F0ECE2;
+
+  /* Semantics */
+  --semantic-success: #1E5C35;
+  --semantic-warning: #9A5B0A;
+  --semantic-danger: #A82828;
+  --semantic-info: #1B4B66;
+
+  /* Layered Natural Shadows */
+  --shadow-subtle: 0 1px 3px rgba(27, 67, 50, 0.05), 0 1px 2px rgba(27, 67, 50, 0.02);
+  --shadow-card: 0 4px 16px -2px rgba(27, 67, 50, 0.07), 0 2px 6px -1px rgba(27, 67, 50, 0.03);
+  --shadow-card-hover: 0 14px 32px -4px rgba(27, 67, 50, 0.12), 0 6px 12px -2px rgba(27, 67, 50, 0.05);
+  --shadow-modal: 0 24px 50px -12px rgba(27, 67, 50, 0.20), 0 10px 20px -4px rgba(27, 67, 50, 0.08);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+@theme {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-warm: var(--surface-warm);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-sand: var(--surface-sand);
+
+  --color-forest-900: var(--forest-900);
+  --color-forest-800: var(--forest-800);
+  --color-forest-700: var(--forest-700);
+  --color-forest-600: var(--forest-600);
+  --color-forest-500: var(--forest-500);
+  --color-forest-200: var(--forest-200);
+  --color-forest-100: var(--forest-100);
+  --color-forest-50: var(--forest-50);
+
+  --color-harvest-900: var(--harvest-900);
+  --color-harvest-800: var(--harvest-800);
+  --color-harvest-700: var(--harvest-700);
+  --color-harvest-600: var(--harvest-600);
+  --color-harvest-500: var(--harvest-500);
+  --color-harvest-200: var(--harvest-200);
+  --color-harvest-100: var(--harvest-100);
+  --color-harvest-50: var(--harvest-50);
+
+  --color-earth-ink: var(--earth-ink);
+  --color-earth-charcoal: var(--earth-charcoal);
+  --color-earth-muted: var(--earth-muted);
+  --color-earth-border: var(--earth-border);
+  --color-earth-border-subtle: var(--earth-border-subtle);
+  --color-earth-line: var(--earth-line);
+
+  --font-serif: var(--font-display), "Instrument Serif", Georgia, serif;
+  --font-sans: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", "Noto Sans Kannada", sans-serif;
+
+  --shadow-warm-sm: var(--shadow-subtle);
+  --shadow-warm-md: var(--shadow-card);
+  --shadow-warm-lg: var(--shadow-card-hover);
+  --shadow-warm-modal: var(--shadow-modal);
+}
+
+/* Base Body Styles */
+html {
+  background-color: var(--canvas);
+  color: var(--earth-ink);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--earth-ink);
+  font-family: var(--font-sans), sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle Tactile Grain Texture Overlay */
+.grain-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Focus Ring Utility for AA Compliance */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--forest-700);
+  outline-offset: 2px;
+}
+
+/* Micro-interaction transitions (150-300ms ease-out) */
+.pressable {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease-out;
+}
+.pressable:active {
+  transform: scale(0.975);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

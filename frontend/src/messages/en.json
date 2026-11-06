@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "name": "KhetBazaar",
+    "tagline": "Direct from the Soil to Your Table",
+    "description": "Connecting local farmers directly with consumers for transparent prices, crop availability, and zero middlemen."
+  },
+  "nav": {
+    "home": "Home",
+    "designSystem": "Design System",
+    "crops": "Crops Available",
+    "markets": "Local Mandis",
+    "farmers": "Farmers Directory",
+    "listProduce": "List Produce"
+  },
+  "common": {
+    "search": "Search crops, farmers or mandis...",
+    "filter": "Filter",
+    "reset": "Reset",
+    "viewMore": "View Details",
+    "contactFarmer": "Contact Farmer",
+    "verified": "Verified Producer",
+    "organic": "100% Organic",
+    "fresh": "Harvest Fresh",
+    "inSeason": "In Season",
+    "price": "Price per kg",
+    "quantity": "Available Stock",
+    "language": "Language",
+    "close": "Close"
+  },
+  "designSystem": {
+    "title": "KhetBazaar Design System",
+    "subtitle": "An editorial, tactile design language engineered for agricultural transparency and high-contrast digital accessibility.",
+    "colorTokens": "Color Palette & Contrast AA/AAA",
+    "typography": "Editorial Typography & Type Scale",
+    "spacingElevation": "8px Grid & Layered Elevation",
+    "components": "Base Component Architecture"
+  },
+  "footer": {
+    "empowering": "Empowering rural farmers with open market transparency across India.",
+    "rights": "All rights reserved. Designed for local farming communities.",
+    "accessibility": "Built with WCAG AA compliance and trilingual localization."
+  }
+}

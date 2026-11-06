@@ -1,0 +1,12 @@
+{
+  "name": "khetbazaar-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KhetBazaar: Local Farmer Market Information System",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "test:backend": "node backend/scripts/verify-zero-data.mjs"
+  }
+}
