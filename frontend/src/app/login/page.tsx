@@ -81,6 +81,10 @@ export default function LoginPage() {
     setAdminId("Amogh");
     setAdminPassword("1328");
     setErrorMessage(null);
+    const result = adminLogin("Amogh", "1328");
+    if (result.success) {
+      window.location.href = "/admin";
+    }
   };
 
   return (

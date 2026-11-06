@@ -312,6 +312,14 @@ export default function AdminPanelPage() {
     setInputAdminId("Amogh");
     setInputAdminPassword("1328");
     setLoginError(null);
+    const res = adminLogin("Amogh", "1328");
+    if (res.success) {
+      toast({
+        title: "Admin Console Unlocked",
+        description: "Welcome Amogh. State APMC management loaded.",
+        type: "success",
+      });
+    }
   };
 
   // 1. STRICT ACCESS CONTROL: Admin page is open ONLY by Amogh with password 1328

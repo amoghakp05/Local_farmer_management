@@ -22,24 +22,12 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Clean loading placeholder for 3D canvas (prevents card layout overlap while loading)
-function CanvasLoadingPlaceholder() {
-  return (
-    <div className="w-full h-full min-h-[400px] flex flex-col items-center justify-center bg-gradient-to-b from-[#FAF8F3] to-[#F5EFE4]/80">
-      <div className="w-10 h-10 rounded-full border-3 border-[var(--forest-600)] border-t-transparent animate-spin" />
-      <span className="text-xs font-bold text-[var(--forest-800)] mt-3">
-        Loading 3D Harvest Scene...
-      </span>
-    </div>
-  );
-}
-
-// Dynamically import 3D Canvas with ssr: false
+// Dynamically import 3D Canvas with ssr: false (clean instant mount with zero placeholder overlap)
 const HarvestJourneyCanvas = dynamic(
   () => import("@/components/3d/HarvestJourneyCanvas"),
   {
     ssr: false,
-    loading: () => <CanvasLoadingPlaceholder />,
+    loading: () => null,
   }
 );
 
@@ -127,9 +115,10 @@ export function HarvestJourneySection() {
       const st = ScrollTrigger.create({
         id: "harvest-journey-trigger",
         trigger: triggerRef.current,
-        start: "top top",
+        start: "top 72px",
         end: "+=160%",
         pin: true,
+        pinSpacing: true,
         scrub: 0.4,
         anticipatePin: 1,
         onUpdate: (self) => {
@@ -181,7 +170,7 @@ export function HarvestJourneySection() {
         <CanvasErrorBoundary fallback={<HarvestJourneyFallback />}>
           <div
             ref={triggerRef}
-            className="relative w-full h-screen min-h-[640px] flex flex-col justify-between overflow-hidden"
+            className="relative w-full h-[calc(100vh-4.5rem)] min-h-[480px] max-h-[850px] flex flex-col justify-between overflow-hidden"
           >
             {/* Background 3D Scene (Unobstructed full height) */}
             <div className="absolute inset-0 z-0">
@@ -189,7 +178,7 @@ export function HarvestJourneySection() {
             </div>
 
             {/* Top Bar Overlay: Chapter Navigation Pills */}
-            <div className="relative z-20 pt-18 sm:pt-20 px-4 sm:px-8 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-none">
+            <div className="relative z-20 pt-3 sm:pt-4 px-4 sm:px-8 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-none">
               <div className="flex items-center gap-2 pointer-events-auto bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[var(--earth-border)] shadow-sm">
                 <Badge variant="forest" size="sm" icon={<SproutIcon size={12} />}>
                   The Harvest Journey
@@ -256,7 +245,7 @@ export function HarvestJourneySection() {
             </div>
 
             {/* Middle / Bottom Narrative Layout (Clean Left-Side Alignment on Desktop) */}
-            <div className="relative z-20 pb-8 sm:pb-12 px-4 sm:px-8 max-w-7xl mx-auto w-full flex items-end justify-start pointer-events-none">
+            <div className="relative z-20 pb-4 sm:pb-6 px-4 sm:px-8 max-w-7xl mx-auto w-full flex items-end justify-start pointer-events-none">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeChapter.id}
@@ -264,7 +253,7 @@ export function HarvestJourneySection() {
                   animate={{ opacity: 1, x: 0, y: 0 }}
                   exit={{ opacity: 0, x: 16, y: -8 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="pointer-events-auto w-full max-w-lg bg-white/95 backdrop-blur-lg rounded-3xl border border-[var(--earth-border)] p-6 sm:p-7 shadow-[var(--shadow-warm-lg)]"
+                  className="pointer-events-auto w-full max-w-md lg:max-w-lg bg-white/95 backdrop-blur-lg rounded-2xl sm:rounded-3xl border border-[var(--earth-border)] p-5 sm:p-6 shadow-[var(--shadow-warm-lg)]"
                 >
                   <div className="flex items-center justify-between mb-2.5">
                     <div className="flex items-center gap-2">
@@ -285,11 +274,11 @@ export function HarvestJourneySection() {
                     </span>
                   </div>
 
-                  <h4 className="font-serif text-xl sm:text-2xl font-bold text-[var(--earth-ink)] mt-2">
+                  <h4 className="font-serif text-lg sm:text-xl font-bold text-[var(--earth-ink)] mt-1.5">
                     {activeChapter.headline}
                   </h4>
 
-                  <p className="text-xs sm:text-sm text-[var(--earth-charcoal)] mt-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[var(--earth-charcoal)] mt-1.5 leading-relaxed">
                     {activeChapter.description}
                   </p>
 

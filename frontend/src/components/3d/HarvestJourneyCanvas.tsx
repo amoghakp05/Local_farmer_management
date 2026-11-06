@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { CameraRig } from "./CameraRig";
 import { HarvestScene } from "./HarvestScene";
 import { HarvestJourneyFallback } from "./HarvestJourneyFallback";
@@ -14,10 +13,10 @@ interface HarvestJourneyCanvasProps {
 }
 
 /**
- * Checks whether WebGL / WebGL2 context is available in browser.
+ * Checks whether WebGL context is available in browser.
  */
 function isWebGLAvailable(): boolean {
-  if (typeof window === "undefined") return true;
+  if (typeof window === "undefined") return false;
   try {
     const canvas = document.createElement("canvas");
     return !!(
@@ -31,28 +30,18 @@ function isWebGLAvailable(): boolean {
   }
 }
 
-function CanvasInlineLoader() {
-  return (
-    <div className="w-full h-full min-h-[400px] flex flex-col items-center justify-center bg-transparent pointer-events-none">
-      <div className="w-8 h-8 rounded-full border-3 border-[var(--forest-600)] border-t-transparent animate-spin" />
-    </div>
-  );
-}
-
 export default function HarvestJourneyCanvas({
   scrollProgress,
   className = "",
 }: HarvestJourneyCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const [hasWebGL, setHasWebGL] = useState(true);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
-  const [isLowBandwidth, setIsLowBandwidth] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // 1. Accessibility & Hardware Capability Guard
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
+    setIsMounted(true);
     setHasWebGL(isWebGLAvailable());
 
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -62,20 +51,6 @@ export default function HarvestJourneyCanvas({
       setIsReducedMotion(e.matches);
     };
     motionQuery.addEventListener("change", handleMotionChange);
-
-    const nav = navigator as any;
-    if (nav.connection?.saveData) {
-      setIsLowBandwidth(true);
-    }
-
-    return () => {
-      motionQuery.removeEventListener("change", handleMotionChange);
-    };
-  }, []);
-
-  // 2. Mouse Parallax Tracker
-  useEffect(() => {
-    if (typeof window === "undefined" || isReducedMotion) return;
 
     const handlePointerMove = (e: PointerEvent) => {
       const { clientX, clientY } = e;
@@ -87,11 +62,19 @@ export default function HarvestJourneyCanvas({
     };
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, [isReducedMotion]);
 
-  // If client lacks WebGL, prefers reduced motion, or is on low-bandwidth, render safe static fallback
-  if (!hasWebGL || isReducedMotion || isLowBandwidth) {
+    return () => {
+      motionQuery.removeEventListener("change", handleMotionChange);
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  // If client lacks WebGL or prefers reduced motion, render clean static fallback
+  if (!hasWebGL || isReducedMotion) {
     return <HarvestJourneyFallback />;
   }
 
@@ -99,36 +82,27 @@ export default function HarvestJourneyCanvas({
     <CanvasErrorBoundary fallback={<HarvestJourneyFallback />}>
       <div
         ref={containerRef}
-        className={`relative w-full h-full min-h-[500px] overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
+        className={`relative w-full h-full min-h-[500px] overflow-hidden pointer-events-none ${className}`}
       >
-        <Suspense fallback={<CanvasInlineLoader />}>
-          <Canvas
-            shadows
-            dpr={[1, 1.5]}
-            frameloop="always"
-            camera={{
-              position: [0, 2.4, 7.5],
-              fov: 46,
-              near: 0.1,
-              far: 100,
-            }}
-            gl={{
-              antialias: true,
-              powerPreference: "high-performance",
-              alpha: false,
-            }}
-          >
-            <OrbitControls
-              enableZoom={false}
-              enablePan={false}
-              maxPolarAngle={Math.PI / 2 - 0.05}
-              minPolarAngle={0.2}
-              rotateSpeed={0.5}
-            />
-            <CameraRig scrollProgress={scrollProgress} mousePos={mousePos} />
-            <HarvestScene />
-          </Canvas>
-        </Suspense>
+        <Canvas
+          shadows
+          dpr={[1, 1.5]}
+          frameloop="always"
+          camera={{
+            position: [0, 2.4, 7.5],
+            fov: 46,
+            near: 0.1,
+            far: 100,
+          }}
+          gl={{
+            antialias: true,
+            powerPreference: "high-performance",
+            alpha: false,
+          }}
+        >
+          <CameraRig scrollProgress={scrollProgress} mousePos={mousePos} />
+          <HarvestScene />
+        </Canvas>
       </div>
     </CanvasErrorBoundary>
   );

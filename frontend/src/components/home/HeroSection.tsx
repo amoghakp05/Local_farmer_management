@@ -16,9 +16,9 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
   const { t } = useI18n();
 
   return (
-    <section className="relative w-full pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+    <section className="relative w-full pt-8 pb-10 sm:pt-14 sm:pb-14 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col items-center text-center">
       {/* Editorial Trust Badges */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-4 sm:mb-5">
         <Badge variant="forest" size="md" icon={<SproutIcon size={14} />}>
           Direct Farmer-to-Consumer Network
         </Badge>
@@ -31,22 +31,22 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
       </div>
 
       {/* Main Serif Headline */}
-      <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[var(--forest-900)] max-w-5xl leading-[1.06]">
+      <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[var(--forest-900)] max-w-4xl leading-[1.1]">
         Direct from Living Soil to Your Family&apos;s Table
       </h1>
 
       {/* Editorial Subtitle */}
-      <p className="mt-6 text-base sm:text-xl text-[var(--earth-muted)] max-w-3xl leading-relaxed">
+      <p className="mt-4 text-sm sm:text-lg text-[var(--earth-muted)] max-w-2xl leading-relaxed">
         {t("brand.description")} Connect with local growers across Karnataka, check transparent APMC mandi price benchmarks, and buy harvest-fresh crops with zero broker commission.
       </p>
 
       {/* Primary Action Buttons */}
-      <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
         <Link href="/crops">
           <Button
-            size="lg"
+            size="md"
             variant="primary"
-            leftIcon={<Search className="w-5 h-5" />}
+            leftIcon={<Search className="w-4 h-4" />}
             className="cursor-pointer"
           >
             Explore Available Crops
@@ -55,9 +55,9 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
 
         <Link href="/register?role=farmer">
           <Button
-            size="lg"
+            size="md"
             variant="accent"
-            leftIcon={<PlusCircle className="w-5 h-5" />}
+            leftIcon={<PlusCircle className="w-4 h-4" />}
             className="cursor-pointer"
           >
             + Register as Farmer
@@ -66,9 +66,9 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
 
         <Link href="/design-system">
           <Button
-            size="lg"
+            size="md"
             variant="secondary"
-            leftIcon={<SproutIcon size={18} className="text-[var(--forest-700)]" />}
+            leftIcon={<SproutIcon size={16} className="text-[var(--forest-700)]" />}
             className="cursor-pointer"
           >
             Design System Specs
@@ -76,23 +76,27 @@ export function HeroSection({ onExploreClick }: { onExploreClick?: () => void })
         </Link>
       </div>
 
-      {/* 3D Journey Scroll Hint (Clickable Smooth Scroll) */}
-      <button
-        type="button"
-        onClick={() => {
-          const el = document.getElementById("harvest-journey");
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-          } else if (onExploreClick) {
-            onExploreClick();
-          }
-        }}
-        className="mt-12 flex flex-col items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--forest-800)] hover:text-[var(--forest-900)] cursor-pointer group transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--forest-700)] rounded-lg p-2"
-        aria-label="Scroll down to the 3D Harvest Journey"
-      >
-        <span className="group-hover:underline">Explore the 3D Harvest Journey Below</span>
-        <ArrowDown className="w-4 h-4 text-[var(--harvest-600)] animate-bounce" />
-      </button>
+      {/* 3D Journey Scroll Hint (Clickable Clean Pill with Smooth Scroll Offset) */}
+      <div className="mt-8">
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById("harvest-journey");
+            if (el) {
+              const navHeight = 72; // Header height in px
+              const targetTop = el.getBoundingClientRect().top + window.scrollY - navHeight;
+              window.scrollTo({ top: targetTop, behavior: "smooth" });
+            } else if (onExploreClick) {
+              onExploreClick();
+            }
+          }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-[var(--forest-900)] text-xs font-bold border border-[var(--earth-border)] shadow-xs hover:shadow-sm transition-all cursor-pointer group"
+          aria-label="Scroll down to the 3D Harvest Journey"
+        >
+          <span>Explore 3D Harvest Journey</span>
+          <ArrowDown className="w-3.5 h-3.5 text-[var(--harvest-700)] group-hover:translate-y-0.5 transition-transform" />
+        </button>
+      </div>
     </section>
   );
 }
